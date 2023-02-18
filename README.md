@@ -1,6 +1,10 @@
 go rest api template using GIN, GORM(mysql) & ozzo-validation.
 \*Still work in progress...
 
+## Postman documentation:
+
+https://documenter.getpostman.com/view/19672778/2s93CHtuVy
+
 ## Packages
 
 #### repository
