@@ -14,13 +14,13 @@ import (
 type UserHandler struct{
 	userService service.UserService
 }
-func NewUserHandler(userService *service.UserService)(UserHandler){
-	return UserHandler{
-		userService: *userService,
-	}
+func NewUserHandler(userService *service.UserService, app *gin.Engine)(UserHandler){
+	h := UserHandler{userService: *userService}
+	h.route(app)
+	return h
 }
 
-func (h *UserHandler) Route(app *gin.Engine){
+func (h *UserHandler) route(app *gin.Engine){
 	user := app.Group("/user")
 	user.POST("/login", h.Login)
 	user.POST("/register", h.Register)

@@ -30,6 +30,15 @@ func main() {
 	if err = database.MigrateMySQL(db); err != nil {
 		log.Panicln(err)
 	}
+
+	// setup gin
+	if (os.Getenv("GIN_MODE") == "release"){
+		gin.SetMode(gin.ReleaseMode)
+	}
+	app := gin.Default()
+	app.Use(middleware.Timeout(15 * time.Second))
+	// app.Use(middleware.PrintBody())
+	app.Use(middleware.PrintHeader())
 	
 	/* architecture: handler -> service/usecase -> repository */
 	// repositories
@@ -39,20 +48,9 @@ func main() {
 	userService := service.NewUserService(&userRepo)
 
 	// handlers
-	userHandler := handler.NewUserHandler(&userService)
+	_ = handler.NewUserHandler(&userService, app)
 
+	// *endpoint is defined in each handler
 
-	// setup gin
-	if (os.Getenv("GIN_MODE") == "release"){
-		gin.SetMode(gin.ReleaseMode)
-	}
-	app := gin.Default()
-	app.Use(middleware.Timeout(15 * time.Second))
-	// app.Use(middleware.PrintBody())
-	// app.Use(middleware.PrintHeader())
-	
-	// app routes
-	userHandler.Route(app)
-	
 	app.Run()
 }
