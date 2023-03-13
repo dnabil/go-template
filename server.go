@@ -38,7 +38,7 @@ func main() {
 	app := gin.Default()
 	app.Use(middleware.Timeout(15 * time.Second))
 	// app.Use(middleware.PrintBody())
-	app.Use(middleware.PrintHeader())
+	// app.Use(middleware.PrintHeader())
 	
 	/* architecture: handler -> service/usecase -> repository */
 	// repositories
